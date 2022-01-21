@@ -1,0 +1,63 @@
+﻿@{
+    ViewData["Title"] = "Crime Locator";
+    ViewBag.Years = new int[] { 2022, 2021, 2020, 2018 };
+}
+
+<div class="text-center">
+    <h1 class="display-4">Crime Locator</h1>
+    <p>Uses public API provided by <a href="https://data.police.uk/">data.police.uk.</a> Latest data available: @ViewBag.LatestUpdate.</p>
+    <p>Get a crime summary within a 1 mile radius of a latitude & longitude at a certain month.</p>
+    <div class="container m-2">
+        <form method="post">
+            <div class="form-row">
+                <div class="col">
+                    <label for="latitude">Latitude</label>
+                    <input type="text" class="form-control" id="latitude" name="latitude" placeholder="latitude">
+                </div>
+                <div class="col">
+                    <label for="longitude">Longitude</label>
+                    <input type="text" class="form-control" id="longitude" name="longitude" placeholder="longitude">
+                </div>
+                <div class="col">
+                    <label for="date">Date</label>
+                    <select class="form-control" id="date" name="date">
+                        @foreach (var date in ViewBag.Dates)
+                        {
+                            <option>@date</option>
+                        }
+                    </select>
+                </div>
+                <div class="col">
+                    <button type="submit" class="btn btn-primary" style="position: absolute; bottom: 0;">Submit</button>
+                </div>
+            </div>
+        </form>
+        @if (ViewBag.Error != null)
+        {
+            <div class="alert alert-danger m-5 w-50 mx-auto" role="alert">
+                @ViewBag.Error
+            </div>
+        }
+        @if (ViewBag.CrimeCategorys != null)
+        {
+            <h2 class="mt-4">Crime Summary</h2>
+            <table class="table table-striped w-50 mx-auto">
+                <thead class="thead-dark">
+                    <tr>
+                        <th scope="col" class="text-left">Crime Category</th>
+                        <th scope="col" class="text-right">Count</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var crime in ViewBag.CrimeCategorys)
+                    {
+                        <tr>
+                            <td class="text-left">@crime.Category</td>
+                            <td class="text-right">@crime.Count</td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        }
+    </div>
+</div>
